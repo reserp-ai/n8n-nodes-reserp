@@ -1,0 +1,58 @@
+{
+  "name": "n8n-nodes-reserp",
+  "version": "0.1.0",
+  "description": "Minimal n8n community node for the Reserp Google Search API",
+  "license": "MIT",
+  "homepage": "https://reserp.ai/docs",
+  "keywords": [
+    "n8n-community-node-package",
+    "reserp",
+    "google-search",
+    "search-api",
+    "serp-api"
+  ],
+  "author": {
+    "name": "Reserp",
+    "email": "support@reserp.ai",
+    "url": "https://reserp.ai/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/reserp-ai/n8n-nodes-reserp.git"
+  },
+  "scripts": {
+    "build": "n8n-node build",
+    "lint": "n8n-node lint",
+    "lint:fix": "n8n-node lint --fix",
+    "test": "npm run build && node --test tests/*.test.mjs",
+    "release": "n8n-node release",
+    "prepublishOnly": "n8n-node prerelease"
+  },
+  "files": [
+    "dist"
+  ],
+  "n8n": {
+    "n8nNodesApiVersion": 1,
+    "strict": true,
+    "credentials": [
+      "dist/credentials/ReserpApi.credentials.js"
+    ],
+    "nodes": [
+      "dist/nodes/Reserp/Reserp.node.js"
+    ]
+  },
+  "devDependencies": {
+    "@n8n/node-cli": "0.44.3",
+    "eslint": "9.39.4",
+    "prettier": "3.8.3",
+    "release-it": "20.2.0",
+    "typescript": "5.9.3"
+  },
+  "peerDependencies": {
+    "n8n-workflow": "*"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}

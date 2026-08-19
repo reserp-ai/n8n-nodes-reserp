@@ -1,0 +1,19 @@
+{
+  "node": "n8n-nodes-reserp",
+  "nodeVersion": "1.0",
+  "codexVersion": "1.0",
+  "categories": ["Development", "Developer Tools"],
+  "resources": {
+    "credentialDocumentation": [
+      {
+        "url": "https://github.com/reserp-ai/n8n-nodes-reserp#credentials"
+      }
+    ],
+    "primaryDocumentation": [
+      {
+        "url": "https://github.com/reserp-ai/n8n-nodes-reserp#readme"
+      }
+    ]
+  }
+}
+
