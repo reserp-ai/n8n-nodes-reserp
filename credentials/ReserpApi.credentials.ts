@@ -1,4 +1,10 @@
-import type { IAuthenticateGeneric, ICredentialType, Icon, INodeProperties } from 'n8n-workflow';
+import type {
+	IAuthenticateGeneric,
+	ICredentialTestRequest,
+	ICredentialType,
+	Icon,
+	INodeProperties,
+} from 'n8n-workflow';
 
 export class ReserpApi implements ICredentialType {
 	name = 'reserpApi';
@@ -30,5 +36,26 @@ export class ReserpApi implements ICredentialType {
 				Authorization: '=Bearer {{$credentials.apiKey}}',
 			},
 		},
+	};
+
+	test: ICredentialTestRequest = {
+		request: {
+			baseURL: 'https://api.reserp.ai',
+			url: '/v1/serp',
+			method: 'POST',
+			body: {},
+			json: true,
+			ignoreHttpStatusErrors: true,
+		},
+		rules: [
+			{
+				type: 'responseSuccessBody',
+				properties: {
+					key: 'error',
+					value: 'authentication_failed',
+					message: 'Invalid Reserp API key',
+				},
+			},
+		],
 	};
 }

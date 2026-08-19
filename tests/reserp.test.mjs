@@ -1,7 +1,33 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
+import { ReserpApi } from '../dist/credentials/ReserpApi.credentials.js';
 import { Reserp } from '../dist/nodes/Reserp/Reserp.node.js';
+
+test('validates credentials without running or billing a search', () => {
+	const credential = new ReserpApi();
+
+	assert.deepEqual(credential.test, {
+		request: {
+			baseURL: 'https://api.reserp.ai',
+			url: '/v1/serp',
+			method: 'POST',
+			body: {},
+			json: true,
+			ignoreHttpStatusErrors: true,
+		},
+		rules: [
+			{
+				type: 'responseSuccessBody',
+				properties: {
+					key: 'error',
+					value: 'authentication_failed',
+					message: 'Invalid Reserp API key',
+				},
+			},
+		],
+	});
+});
 
 test('makes one request per input item and returns the API payload', async () => {
 	const payload = {
@@ -59,4 +85,3 @@ test('propagates a transport failure without retrying', async () => {
 	await assert.rejects(new Reserp().execute.call(context), (error) => error === failure);
 	assert.equal(calls, 1);
 });
-
