@@ -1,15 +1,20 @@
 {
   "name": "n8n-nodes-reserp",
-  "version": "0.1.1",
-  "description": "Minimal n8n community node for the Reserp Google Search API",
+  "version": "0.2.0",
+  "description": "Minimal n8n community node for the Reserp Google Search API v2",
   "license": "MIT",
   "homepage": "https://reserp.ai/docs",
   "keywords": [
     "n8n-community-node-package",
     "reserp",
     "google-search",
+    "google-search-api",
+    "google-serp-api",
     "search-api",
-    "serp-api"
+    "serp-api",
+    "serp-data",
+    "web-search",
+    "ai-agent"
   ],
   "author": {
     "name": "Reserp",

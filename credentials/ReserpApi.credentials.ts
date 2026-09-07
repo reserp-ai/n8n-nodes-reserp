@@ -41,7 +41,7 @@ export class ReserpApi implements ICredentialType {
 	test: ICredentialTestRequest = {
 		request: {
 			baseURL: 'https://api.reserp.ai',
-			url: '/v1/serp',
+			url: '/v2/serp/urls',
 			method: 'POST',
 			body: {},
 			json: true,

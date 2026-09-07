@@ -19,7 +19,7 @@ export class Reserp implements INodeType {
 		},
 		group: ['input'],
 		version: 1,
-		description: 'Send one Google Search URL to the Reserp API',
+		description: 'Get a v2 URL index or structured Google Search results from Reserp',
 		subtitle: '={{$parameter["url"]}}',
 		defaults: {
 			name: 'Reserp',
@@ -35,6 +35,25 @@ export class Reserp implements INodeType {
 			},
 		],
 		properties: [
+			{
+				displayName: 'Response Shape',
+				name: 'responseShape',
+				type: 'options',
+				options: [
+					{
+						name: 'URL Index',
+						value: 'urls',
+						description: 'Flat, page-ordered, deduplicated URLs with optional visible text',
+					},
+					{
+						name: 'Structured Results',
+						value: 'structured',
+						description: 'Typed result families, SERP features, and explicit positions',
+					},
+				],
+				default: 'urls',
+				description: 'Choose which Reserp v2 response contract to return',
+			},
 			{
 				displayName: 'Google Search URL',
 				name: 'url',
@@ -71,13 +90,15 @@ export class Reserp implements INodeType {
 		const output: INodeExecutionData[] = [];
 
 		for (let itemIndex = 0; itemIndex < items.length; itemIndex++) {
+			const responseShape = this.getNodeParameter('responseShape', itemIndex) as string;
 			const url = this.getNodeParameter('url', itemIndex) as string;
+			const endpoint = responseShape === 'structured' ? 'structured' : 'urls';
 			const response = await this.helpers.httpRequestWithAuthentication.call(
 				this,
 				'reserpApi',
 				{
 					method: 'POST',
-					url: 'https://api.reserp.ai/v1/serp',
+					url: `https://api.reserp.ai/v2/serp/${endpoint}`,
 					headers: {
 						'Content-Type': 'application/json',
 					},
