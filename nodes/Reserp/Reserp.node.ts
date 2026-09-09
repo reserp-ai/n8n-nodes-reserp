@@ -19,7 +19,7 @@ export class Reserp implements INodeType {
 		},
 		group: ['input'],
 		version: 1,
-		description: 'Get a v2 URL index or structured Google Search results from Reserp',
+		description: 'Get flat or structured Google Search results from Reserp',
 		subtitle: '={{$parameter["url"]}}',
 		defaults: {
 			name: 'Reserp',
@@ -41,17 +41,17 @@ export class Reserp implements INodeType {
 				type: 'options',
 				options: [
 					{
-						name: 'URL Index',
-						value: 'urls',
-						description: 'Flat, page-ordered, deduplicated URLs with optional visible text',
+						name: 'Search',
+						value: 'search',
+						description: 'Flat, page-ordered, deduplicated results with optional visible text',
 					},
 					{
 						name: 'Structured Results',
 						value: 'structured',
-						description: 'Typed result families, SERP features, and explicit positions',
+						description: 'Typed, page-ordered SERP blocks with explicit positions',
 					},
 				],
-				default: 'urls',
+				default: 'search',
 				description: 'Choose which Reserp v2 response contract to return',
 			},
 			{
@@ -92,7 +92,7 @@ export class Reserp implements INodeType {
 		for (let itemIndex = 0; itemIndex < items.length; itemIndex++) {
 			const responseShape = this.getNodeParameter('responseShape', itemIndex) as string;
 			const url = this.getNodeParameter('url', itemIndex) as string;
-			const endpoint = responseShape === 'structured' ? 'structured' : 'urls';
+			const endpoint = responseShape === 'structured' ? 'structured' : 'search';
 			const response = await this.helpers.httpRequestWithAuthentication.call(
 				this,
 				'reserpApi',

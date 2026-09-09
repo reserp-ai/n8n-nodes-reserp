@@ -10,7 +10,7 @@ test('validates credentials without running or billing a search', () => {
 	assert.deepEqual(credential.test, {
 		request: {
 			baseURL: 'https://api.reserp.ai',
-			url: '/v2/serp/urls',
+			url: '/v2/serp/search',
 			method: 'POST',
 			body: {},
 			json: true,
@@ -29,14 +29,13 @@ test('validates credentials without running or billing a search', () => {
 	});
 });
 
-test('uses the v2 URL index by default and returns the API payload', async () => {
+test('uses v2 Search by default and returns the API payload', async () => {
 	const payload = {
 		ok: true,
 		request: { url: 'https://www.google.com/search?q=test' },
 		page: { url: 'https://www.google.com/search?q=test' },
-		urls: [{ url: 'https://example.com', text: 'Example' }],
+		results: [{ url: 'https://example.com', text: 'Example' }],
 		pagination: { next_url: 'https://www.google.com/search?q=test&start=10' },
-		metadata: { captured_at: '2026-09-07T00:00:00Z', parser_version: '2.0.0', warnings: [] },
 		billed: true,
 		billing_source: 'prepaid',
 	};
@@ -44,7 +43,7 @@ test('uses the v2 URL index by default and returns the API payload', async () =>
 	const context = {
 		getInputData: () => [{ json: {} }],
 		getNodeParameter: (name) =>
-			name === 'responseShape' ? 'urls' : 'https://www.google.com/search?q=test',
+			name === 'responseShape' ? 'search' : 'https://www.google.com/search?q=test',
 		helpers: {
 			httpRequestWithAuthentication(...args) {
 				calls.push(args);
@@ -60,7 +59,7 @@ test('uses the v2 URL index by default and returns the API payload', async () =>
 	assert.equal(calls[0][0], 'reserpApi');
 	assert.deepEqual(calls[0][1], {
 		method: 'POST',
-		url: 'https://api.reserp.ai/v2/serp/urls',
+		url: 'https://api.reserp.ai/v2/serp/search',
 		headers: { 'Content-Type': 'application/json' },
 		body: { url: 'https://www.google.com/search?q=test' },
 		json: true,
@@ -70,9 +69,20 @@ test('uses the v2 URL index by default and returns the API payload', async () =>
 test('can request the v2 structured response without reshaping it', async () => {
 	const payload = {
 		ok: true,
-		schema_version: '2.0',
-		results: { organic: [], ads: [], images: [], shopping: [], news: [], videos: [], local: [] },
-		features: [],
+		request: { url: 'https://www.google.com/search?q=test' },
+		page: {
+			url: 'https://www.google.com/search?q=test',
+			query: 'test',
+			title: 'test - Google Search',
+			surface: 'web',
+			state: 'results',
+			overlays: [],
+			spelling: null,
+		},
+		blocks: [],
+		pagination: { next_url: 'https://www.google.com/search?q=test&start=10' },
+		billed: true,
+		billing_source: 'prepaid',
 	};
 	const calls = [];
 	const context = {
@@ -100,7 +110,7 @@ test('propagates a transport failure without retrying', async () => {
 	const context = {
 		getInputData: () => [{ json: {} }],
 		getNodeParameter: (name) =>
-			name === 'responseShape' ? 'urls' : 'https://www.google.com/search?q=test',
+			name === 'responseShape' ? 'search' : 'https://www.google.com/search?q=test',
 		helpers: {
 			httpRequestWithAuthentication() {
 				calls += 1;

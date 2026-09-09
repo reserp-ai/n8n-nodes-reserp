@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-reserp",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Minimal n8n community node for the Reserp Google Search API v2",
   "license": "MIT",
   "homepage": "https://reserp.ai/docs",
