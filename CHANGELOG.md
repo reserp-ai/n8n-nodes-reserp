@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.1
+
+- Correct the node codex identifier to `n8n-nodes-reserp.reserp`.
+- Keep only the supported `Development` category, as requested during n8n manual review.
+
 ## 0.3.0
 
 - Adopt `POST /v2/serp/search` and its stable `results[]` response.
